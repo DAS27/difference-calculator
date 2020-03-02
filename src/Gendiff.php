@@ -4,6 +4,8 @@ namespace GenDiff;
 
 use Docopt;
 
+use function Differ\genDiff;
+
 function run()
 {
     $doc = <<<DOC
@@ -27,7 +29,7 @@ DOC;
         'version' => 'Docopt 2.0',
     );
     $args = Docopt::handle($doc, $params);
-    foreach ($args as $k => $v) {
-        echo $k . ': ' . json_encode($v) . PHP_EOL;
-    }
+    $firstFile = $args['<firstFile>'];
+    $secondFile = $args['<secondFile>'];
+    echo genDiff($firstFile, $secondFile);
 }

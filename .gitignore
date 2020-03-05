@@ -1,2 +1,6 @@
 /vendor/
 .settings
+.phpunit.result.cache
+.project
+.buildpath
+clover.xml

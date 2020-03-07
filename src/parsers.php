@@ -11,7 +11,7 @@ function genDiff($pathToFile1, $pathToFile2)
     $extension1 = pathinfo($pathToFile1);
     $extension2 = pathinfo($pathToFile2);
 
-    if ($extension1 !== 'yml' && $extension2 !== 'yml') {
+    if ($extension1['extension'] !== 'yml' && $extension2['extension'] !== 'yml') {
         return false;
     }
 

@@ -3,6 +3,7 @@
 namespace Parsers;
 
 use Symfony\Component\Yaml\Yaml;
+
 use function Funct\Collection\union;
 
 function genDiff($pathToFile1, $pathToFile2)

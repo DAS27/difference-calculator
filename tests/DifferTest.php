@@ -11,7 +11,7 @@ class DifferTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->data = "host: hexlet.io\n+ timeout: 20\n- timeout: 50\n- proxy: 123.234.53.22\n+ verbose: true\n";
+        $this->data = file_get_contents(__DIR__ . '/fixtures/diff.pretty');
     }
 
     public function testGenDiff()

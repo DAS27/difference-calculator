@@ -34,9 +34,11 @@
     ],
     "autoload": {
         "files": [
-            "src/GenDiff.php",
-            "src/Differ.php",
-            "src/parsers.php"
+            "src/docopt.php",
+            "src/differ.php",
+            "src/parsers.php",
+            "src/ast.php",
+            "src/render.php"
         ]
     }
 }

@@ -10,11 +10,16 @@ function genDiff($pathToFile1, $pathToFile2)
     $dataFromPath2 = file_get_contents($pathToFile2);
 
     $dataToArray1 = json_decode($dataFromPath1, true);
-    $dataToArray2 = json_decode($dataFromPath2, true);
+    $dataToArray2 = json_decode($dataFromPath2);
 
+    print_r((object)$dataToArray1);
+
+    /*
     $keys1 = array_keys($dataToArray1);
     $keys2 = array_keys($dataToArray2);
     $keys = union($keys1, $keys2);
+    */
+
 
     return array_reduce(
         $keys,

@@ -13,7 +13,7 @@ function mknode(string $key, string $type, array $children = [], $oldValue , $ne
         'newValue' => $newValue
     ];
 }
-
+/*
 function buildDiff($arr1, $arr2)
 {
     $keys = union(array_keys($arr1), array_keys($arr2));
@@ -24,13 +24,39 @@ function buildDiff($arr1, $arr2)
         if (!isset($arr2[$key])) {
             return mknode($key, 'deleted', [] , $arr1[$key], null);
         }
+        if (is_array($arr1[$key]) && is_array($arr2[$key])) {
+            return mknode($key, 'nested', buildDiff($arr1[$key], $arr2[$key]), null, null);
+        }
         if ($arr1[$key] !== $arr2[$key]) {
             return mknode($key, 'edited', [], $arr1[$key], $arr2[$key]);
-        }
-        if (is_array($arr1[$key]) && (is_array($arr2[$key]))) {
-            return mknode($key, 'nested', buildDiff($arr1[$key], $arr2[$key]), null, null);
         }
 
         return mknode($key, 'unchanged', [], $arr1[$key], null);
     }, $keys);
+}
+*/
+
+function buildDiff($data1, $data2)
+{
+    $keys = union(array_keys($data1), array_keys($data2));
+    return array_reduce($keys, function ($acc, $key) use ($data1, $data2) {
+        if (array_key_exists($key, $data1) && array_key_exists($key, $data2)) {
+            if ($data1[$key] !== $data2[$key]) {
+                $acc[] = mknode($key, 'edited', [], $data1[$key], $data2[$key]);
+                return $acc;
+            } elseif ($data1[$key] == $data2[$key]) {
+                $acc[] = mknode($key, 'unchanged', [], $data1[$key], $data2[$key]);
+                return $acc;
+            }
+        }
+        if (array_key_exists($key, $data1) && !array_key_exists($key, $data2)) {
+            $acc[] = mknode($key, 'deleted', [], $data1[$key], null);
+            return $acc;
+        }
+        if (!array_key_exists($key, $data1) && array_key_exists($key, $data2)) {
+            $acc[] = mknode($key, 'added', [],null, $data2[$key]);
+            return $acc;
+        }
+        return $acc;
+    }, []);
 }

@@ -18,5 +18,6 @@ function genDiff($pathToFile1, $pathToFile2)
     $dataToArray2 = json_decode($dataFromPath2, true);
 
     $result = buildDiff($dataToArray1, $dataToArray2);
+//    print_r($result);
     print_r(doRender($result));
 }

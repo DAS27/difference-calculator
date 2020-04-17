@@ -6,32 +6,37 @@ use function Funct\Collection\flatten;
 
 function doRender($tree)
 {
-    /*
     $level = 0;
-    $iter = array_map(function ($node) use (&$iter, $result) {
-        ['key' => $key, 'type' => $type] = $node;
-        switch ($type) {
-            case 'nested':
-                $result = $iter($node['children']);
-        }
-        return $result;
+    return array_map(function ($node) {
+        return iter($node);
+//        print_r(iter($node));
     }, $tree);
-
-    return $iter;
-    */
-    $level = 0;
-    $iter = array_map(function ($node) use (&$iter, $level) {
-        ['type' => $type] = $node;
-        switch ($type) {
-            case 'nested':
-                print_r($iter($node['children']));
-        }
-    }, $tree);
-    return $iter($tree);
 }
-/*
- function iter($tree) {
-    if ()
-    return stringify($tree);
- }
-*/
+
+function iter($node)
+{
+    ['type' => $type] = $node;
+    $result = '';
+    switch ($type) {
+        case 'nested':
+             if ($node['children']) {
+                 return array_map(function ($n) {
+                     return iter($n);
+                 }, $node['children']);
+             }
+        case 'added':
+            return stringify($node);
+    }
+    return $result;
+}
+
+function stringify($node)
+{
+    $level = 0;
+    return array_map(function ($n) use ($level) {
+//        print_r($n);
+        if (($n)) {
+            print_r(json_encode($n));
+        }
+    }, $node);
+}

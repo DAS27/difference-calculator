@@ -2,8 +2,7 @@
 
 namespace Differ;
 
-use function Funct\Collection\union;
-use function Renderer\doRender;
+use function Renderer\render;
 use function Ast\buildDiff;
 
 //принимает путь к файлу
@@ -19,5 +18,5 @@ function genDiff($pathToFile1, $pathToFile2)
 
     $result = buildDiff($dataToArray1, $dataToArray2);
 //    print_r($result);
-    print_r(doRender($result));
+    print_r(render($result));
 }

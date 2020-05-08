@@ -2,41 +2,60 @@
 
 namespace Renderer;
 
-use function Funct\Collection\flatten;
-
-function doRender($tree)
+function render($tree)
 {
-    $level = 0;
-    return array_map(function ($node) {
-        return iter($node);
-//        print_r(iter($node));
-    }, $tree);
+    $iter = function ($node) use (&$iter) {
+        return array_reduce($node, function ($acc, $n) use ($iter, $node) {
+//            print_r($n);
+            ['key' => $key, 'type' => $type, 'children' => $children] = $n;
+//            $indent = str_repeat(' ', 4 * 1);
+            switch ($type) {
+                case 'unchanged':
+                    $acc .= "  {$key}: ";
+                    $acc .= stringify($n['oldValue']);
+                    break;
+                case 'deleted':
+                    $acc .= "- {$key}: ";
+                    $acc .= stringify($n['oldValue']);
+                    break;
+                case 'added':
+                    $acc .= "+ {$key}: ";
+                    $acc .= stringify($n['newValue']);
+                    break;
+                case 'edited':
+                    $acc .= "+ {$key}: ";
+                    $acc .= stringify($n['newValue']);
+                    $acc .= "- {$key}: ";
+                    $acc .= stringify($n['oldValue']);
+                    break;
+                case 'nested':
+                    $acc .= "  {$key}: ";
+                    $acc .= $iter($children);
+                    $acc .= "  }\n";
+                    break;
+            }
+            return $acc;
+        }, "{\n");
+    };
+
+    return $iter($tree);
 }
 
-function iter($node)
+function stringify($n)
 {
-    ['type' => $type] = $node;
     $result = '';
-    switch ($type) {
-        case 'nested':
-             if ($node['children']) {
-                 return array_map(function ($n) {
-                     return iter($n);
-                 }, $node['children']);
-             }
-        case 'added':
-            return stringify($node);
-    }
-    return $result;
-}
-
-function stringify($node)
-{
     $level = 0;
-    return array_map(function ($n) use ($level) {
-//        print_r($n);
-        if (($n)) {
-            print_r(json_encode($n));
+    if (is_array($n)) {
+        $result .= "{\n";
+        $level++;
+        $indent = str_repeat(' ', 4 * $level);
+        foreach ($n as $key => $value) {
+            $result .= $indent;
+            $result .= "{$key}: {$value}\n";
         }
-    }, $node);
+        $result .= "  }\n";
+        return $result;
+    }
+    $result .= "{$n}\n";
+    return $result;
 }

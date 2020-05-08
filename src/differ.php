@@ -18,5 +18,6 @@ function genDiff($pathToFile1, $pathToFile2)
 
     $result = buildDiff($dataToArray1, $dataToArray2);
 //    print_r($result);
-    print_r(render($result));
+//    print_r(render($result));
+    return render($result);
 }

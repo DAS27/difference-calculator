@@ -7,3 +7,5 @@
 [![asciicast](https://asciinema.org/a/3FUMgsFbyONf8AuEBmqGxYPrI.svg)](https://asciinema.org/a/3FUMgsFbyONf8AuEBmqGxYPrI)
 **Parse yml files**
 [![asciicast](https://asciinema.org/a/JWopstAW304PAUaLCGiZ08utE.svg)](https://asciinema.org/a/JWopstAW304PAUaLCGiZ08utE)
+**Parse nested files**
+[![asciicast](https://asciinema.org/a/moLHIWBfN2jUmG9bkifDQNDeJ.svg)](https://asciinema.org/a/moLHIWBfN2jUmG9bkifDQNDeJ)

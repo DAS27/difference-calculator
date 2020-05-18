@@ -38,7 +38,8 @@
             "src/differ.php",
             "src/parsers.php",
             "src/ast.php",
-            "src/render.php"
+            "src/render.php",
+            "formatters/plain/renderPlainDiff.php"
         ]
     }
 }

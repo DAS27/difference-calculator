@@ -18,25 +18,25 @@ function genDiff($pathToFile1, $pathToFile2)
     $data1 = Yaml::parseFile($pathToFile1, Yaml::PARSE_OBJECT_FOR_MAP);
     $data2 = Yaml::parseFile($pathToFile2, Yaml::PARSE_OBJECT_FOR_MAP);
 
-    $dataToArray1 = json_decode(json_encode($data1), true);
-    $dataToArray2 = json_decode(json_encode($data2), true);
+    $array1 = json_decode(json_encode($data1), true);
+    $array2 = json_decode(json_encode($data2), true);
 
-    $keys1 = array_keys($dataToArray1);
-    $keys2 = array_keys($dataToArray2);
+    $keys1 = array_keys($array1);
+    $keys2 = array_keys($array2);
     $keys = union($keys1, $keys2);
 
     return array_reduce(
         $keys,
-        function ($acc, $key) use ($dataToArray1, $dataToArray2) {
-            if (array_key_exists($key, $dataToArray1) && array_key_exists($key, $dataToArray2)) {
-                if ($dataToArray1[$key] === $dataToArray2[$key]) {
-                    $result = "{$key}: {$dataToArray2[$key]}\n";
+        function ($acc, $key) use ($array1, $array2) {
+            if (array_key_exists($key, $array1) && array_key_exists($key, $array2)) {
+                if ($array1[$key] === $array2[$key]) {
+                    $result = "{$key}: {$array2[$key]}\n";
                 } else {
-                    $result = "+ {$key}: {$dataToArray2[$key]}\n";
-                    $result .= "- {$key}: {$dataToArray1[$key]}\n";
+                    $result = "+ {$key}: {$array2[$key]}\n";
+                    $result .= "- {$key}: {$array1[$key]}\n";
                 }
-            } elseif (array_key_exists($key, $dataToArray1) && !array_key_exists($key, $dataToArray2)) {
-                $result = "- {$key}: {$dataToArray1[$key]}\n";
+            } elseif (array_key_exists($key, $array1) && !array_key_exists($key, $array2)) {
+                $result = "- {$key}: {$array1[$key]}\n";
             } else {
                 $result = "+ {$key}: true\n";
             }

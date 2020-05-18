@@ -4,18 +4,23 @@ namespace Differ;
 
 use function Renderer\render;
 use function Ast\buildDiff;
+use function Formatter\renderPlainDiff;
 
 //принимает путь к файлу
-function genDiff($pathToFile1, $pathToFile2)
+function genDiff($path1, $path2, $format = 'pretty')
 {
     //парсит данные по пути к файлу
-    $dataFromPath1 = file_get_contents($pathToFile1);
-    $dataFromPath2 = file_get_contents($pathToFile2);
+    $data1 = file_get_contents($path1);
+    $data2 = file_get_contents($path2);
+    //преобразует данные в ассоц массив
+    $array1 = json_decode($data1, true);
+    $array2 = json_decode($data2, true);
+    //строит промежуточное представление
+    $diff = buildDiff($array1, $array2);
+    //выводит данные в зависимости от формата
+    if ($format === 'plain') {
+        return renderPlainDiff($diff);
+    }
 
-    //возвращает сгенерированный диф т.е. результат
-    $dataToArray1 = json_decode($dataFromPath1, true);
-    $dataToArray2 = json_decode($dataFromPath2, true);
-
-    $result = buildDiff($dataToArray1, $dataToArray2);
-    return render($result);
+    return render($diff);
 }

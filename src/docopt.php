@@ -29,7 +29,7 @@ DOC;
         'version' => 'Docopt 2.0',
     );
     $args = Docopt::handle($doc, $params);
-    $firstFile = $args['<firstFile>'];
-    $secondFile = $args['<secondFile>'];
-    echo genDiff($firstFile, $secondFile);
+    $path1 = $args['<firstFile>'];
+    $path2 = $args['<secondFile>'];
+    echo genDiff($path1, $path2);
 }

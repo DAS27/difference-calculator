@@ -22,8 +22,7 @@ class DifferTest extends TestCase
     public function testRenderPlainDiff()
     {
         $expected = file_get_contents(__DIR__ . '/fixtures/diff.plain');
-        $diff = genDiff($this->path1, $this->path2, 'plain');
-        $actual = renderPlainDiff($diff);
+        $actual = genDiff($this->path1, $this->path2, 'plain');
         $this->assertEquals($expected, $actual);
     }
 }

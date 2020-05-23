@@ -18,9 +18,8 @@ function genDiff($path1, $path2, $format = 'pretty')
     //строит промежуточное представление
     $diff = buildDiff($array1, $array2);
     //выводит данные в зависимости от формата
-    if ($format == 'plain') {
-//        return renderPlainDiff($diff);
-        print_r(renderPlainDiff($diff));
+    if ($format === 'plain') {
+        return renderPlainDiff($diff);
     }
 
     return render($diff);

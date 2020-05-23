@@ -4,24 +4,23 @@ namespace Formatter;
 
 function renderPlainDiff($tree)
 {
-//    var_dump($tree);
-    $iter = function ($node) use (&$iter) {
-        return array_reduce($node, function ($acc, $n) use (&$iter) {
+    $iter = function ($node, $path = '') use (&$iter) {
+        return array_reduce($node, function ($acc, $n) use ($iter, $path) {
             ['key' => $key, 'type' => $type, 'children' => $children] = $n;
+            $nestedPath = "{$path}.{$key}";
             switch ($type) {
                 case 'deleted':
-                    $acc .= "Property '$key' was removed\n";
-                    break;
-                case 'edited':
-                    $acc .= "Property '$key' was changed. From '{$n['oldValue']}' to '{$n['newValue']}'";
+                    $acc .= "Property" . " " . "'" . trim($nestedPath, '.') . "'" . " " . "was removed\n";
                     break;
                 case 'added':
-                    $acc .= "Property '$key' was added with value: ";
-                    $acc .= stringify($n);
+                    $acc .= "Property" . " " . "'" . trim($nestedPath, '.') . "'" . " " . "was added with value: " . stringify($n['newValue']);
+                    break;
+                case 'edited':
+                    $acc .= "\nProperty" . " " . "'" . trim($nestedPath, '.') . "'" . " " . "was changed. From '{$n['oldValue']}' to '{$n['newValue']}'\n";
                     break;
                 case 'nested':
-
-
+                    $acc .= $iter($children, $key);
+                    break;
             }
             return $acc;
         }, '');
@@ -30,13 +29,7 @@ function renderPlainDiff($tree)
     return $iter($tree);
 }
 
-function stringify($n)
+function stringify($node)
 {
-    if (!is_array($n)) {
-        foreach ($n as $value) {
-            return "'$value'";
-        }
-    }
-
-    return "'complex value'";
+    return is_array($node) ? "'complex value'" : "'{$node}'\n";
 }

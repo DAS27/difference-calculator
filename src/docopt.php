@@ -19,7 +19,7 @@ function run()
     Options:
     -h --help                     Show this screen
     -v --version                  Show version
-    --format <fmt>                Report format [default: pretty]
+    --format <fmt>                Report format: plain [default: pretty]
     
 DOC;
 
@@ -31,5 +31,6 @@ DOC;
     $args = Docopt::handle($doc, $params);
     $path1 = $args['<firstFile>'];
     $path2 = $args['<secondFile>'];
-    echo genDiff($path1, $path2);
+    $format = $args['--format'];
+    echo genDiff($path1, $path2, $format);
 }

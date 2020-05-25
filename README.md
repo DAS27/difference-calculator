@@ -9,3 +9,5 @@
 [![asciicast](https://asciinema.org/a/JWopstAW304PAUaLCGiZ08utE.svg)](https://asciinema.org/a/JWopstAW304PAUaLCGiZ08utE)
 **Parse nested files**
 [![asciicast](https://asciinema.org/a/moLHIWBfN2jUmG9bkifDQNDeJ.svg)](https://asciinema.org/a/moLHIWBfN2jUmG9bkifDQNDeJ)
+**Render in plain format**
+[![asciicast](https://asciinema.org/a/CbM8kThTAEBKlgLKIrQLfPgKo.svg)](https://asciinema.org/a/CbM8kThTAEBKlgLKIrQLfPgKo)

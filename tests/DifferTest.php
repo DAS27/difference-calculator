@@ -25,4 +25,11 @@ class DifferTest extends TestCase
         $actual = genDiff($this->path1, $this->path2, 'plain');
         $this->assertEquals($expected, $actual);
     }
+
+    public function testRenderJsonDiff()
+    {
+        $expected = file_get_contents(__DIR__ . '/fixtures/diff.json');
+        $actual = genDiff($this->path1, $this->path2, 'json');
+        $this->assertEquals($expected, $actual);
+    }
 }

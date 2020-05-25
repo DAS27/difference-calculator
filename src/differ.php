@@ -5,6 +5,7 @@ namespace Differ;
 use function Renderer\render;
 use function Ast\buildDiff;
 use function Formatter\renderPlainDiff;
+use function Formatter\renderJsonDiff;
 
 //принимает путь к файлу
 function genDiff($path1, $path2, $format = 'pretty')
@@ -18,8 +19,10 @@ function genDiff($path1, $path2, $format = 'pretty')
     //строит промежуточное представление
     $diff = buildDiff($array1, $array2);
     //выводит данные в зависимости от формата
-    if ($format === 'plain') {
+    if ($format == 'plain') {
         return renderPlainDiff($diff);
+    } elseif ($format == 'json') {
+        return renderJsonDiff($diff);
     }
 
     return render($diff);

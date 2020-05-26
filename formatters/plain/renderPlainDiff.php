@@ -6,20 +6,20 @@ function renderPlainDiff($tree)
 {
     $iter = function ($node, $path = '') use (&$iter) {
         return array_reduce($node, function ($acc, $n) use ($iter, $path) {
-            ['key' => $key, 'type' => $type, 'children' => $children] = $n;
+            ['key' => $key, 'type' => $type, 'oldValue' => $oldValue, 'newValue' => $newValue] = $n;
             $nestedPath = "{$path}.{$key}";
             switch ($type) {
                 case 'deleted':
-                    $acc .= "Property" . " " . "'" . trim($nestedPath, '.') . "'" . " " . "was removed\n";
+                    $acc .= "Property " . "'" . trim($nestedPath, '.') . "'" . " was removed\n";
                     break;
                 case 'added':
-                    $acc .= "Property" . " " . "'" . trim($nestedPath, '.') . "'" . " " . "was added with value: " . stringify($n['newValue']);
+                    $acc .= "Property " . "'" . trim($nestedPath, '.') . "'" . " was added with value: " . stringify($newValue);
                     break;
                 case 'edited':
-                    $acc .= "\nProperty" . " " . "'" . trim($nestedPath, '.') . "'" . " " . "was changed. From '{$n['oldValue']}' to '{$n['newValue']}'\n";
+                    $acc .= "\nProperty " . "'" . trim($nestedPath, '.') . "'" . " was changed. From '{$oldValue}' to '{$newValue}'\n";
                     break;
                 case 'nested':
-                    $acc .= $iter($children, $key);
+                    $acc .= $iter($n['children'], $key);
                     break;
             }
             return $acc;

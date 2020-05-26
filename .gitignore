@@ -3,4 +3,6 @@
 .phpunit.result.cache
 .project
 .buildpath
+build
+logs
 clover.xml

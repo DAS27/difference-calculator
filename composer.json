@@ -36,9 +36,9 @@
         "files": [
             "src/docopt.php",
             "src/differ.php",
-            "src/parsers.php",
+            "formatters/parsers.php",
             "src/ast.php",
-            "src/render.php",
+            "formatters/pretty/renderPrettyDiff.php",
             "formatters/plain/renderPlainDiff.php",
             "formatters/json/renderJsonDiff.php"
         ]

@@ -1,5 +1,5 @@
 /vendor/
-.settings
+.settings/
 .phpunit.result.cache
 .project
 .buildpath

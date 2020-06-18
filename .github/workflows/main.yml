@@ -5,10 +5,6 @@ name: PHP CI
 on:
   - push
   - pull_request
-    
-env:
-  CC_TEST_REPORTER_ID: 7ac14ba5977fa59c773b3b49bdd67007c83a9b02d2cdb958b2c8ac2decd9986e
-
 
 jobs:
   build:
@@ -40,7 +36,7 @@ jobs:
         uses: paambaati/codeclimate-action@v2.6.0
         # Add Code Climate secret key
         env:
-          CC_TEST_REPORTER_ID: ${{ secrets.env.CC_TEST_REPORTER_ID }}
+          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
         with:
           coverageCommand: make test-coverage
           coverageLocations: ${{github.workplace}}/build/logs/clover.xml:clover

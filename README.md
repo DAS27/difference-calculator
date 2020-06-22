@@ -14,10 +14,6 @@
 **Render in json format**
 [![asciicast](https://asciinema.org/a/e0HA9TSS60Fbmip0aPDyCmwRc.svg)](https://asciinema.org/a/e0HA9TSS60Fbmip0aPDyCmwRc)
 
-## Addons
-
-Use <http://psysh.org/>
-
 ### Installation
 
 Use [Composer](https://getcomposer.org/)

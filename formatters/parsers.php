@@ -6,17 +6,17 @@ use Symfony\Component\Yaml\Yaml;
 
 use function Funct\Collection\union;
 
-function genDiff($pathToFile1, $pathToFile2)
+function genDiff($path1, $path2)
 {
-    $extension1 = pathinfo($pathToFile1);
-    $extension2 = pathinfo($pathToFile2);
+    $extension1 = pathinfo($path1);
+    $extension2 = pathinfo($path2);
 
     if ($extension1['extension'] !== 'yml' && $extension2['extension'] !== 'yml') {
         return false;
     }
 
-    $data1 = Yaml::parseFile($pathToFile1, Yaml::PARSE_OBJECT_FOR_MAP);
-    $data2 = Yaml::parseFile($pathToFile2, Yaml::PARSE_OBJECT_FOR_MAP);
+    $data1 = Yaml::parseFile($path1, Yaml::PARSE_OBJECT_FOR_MAP);
+    $data2 = Yaml::parseFile($path2, Yaml::PARSE_OBJECT_FOR_MAP);
 
     $array1 = json_decode(json_encode($data1), true);
     $array2 = json_decode(json_encode($data2), true);

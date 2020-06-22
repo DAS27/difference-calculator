@@ -32,7 +32,6 @@
     ],
     "autoload": {
         "files": [
-            "bin/docopt.php",
             "src/differ.php",
             "formatters/parsers.php",
             "src/ast.php",

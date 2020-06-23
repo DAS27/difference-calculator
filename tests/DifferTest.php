@@ -9,22 +9,24 @@ class DifferTest extends TestCase
 {
     private function getFixtureFullPath($fixtureName)
     {
-        $path_parts = pathinfo($fixtureName);
-        $pathToFile = __DIR__ . "/fixtures/{$path_parts['basename']}";
-        return $pathToFile;
+        $pathToFile = [];
+        $pathToFile[] = __DIR__;
+        $pathToFile[] = "fixtures";
+        $pathToFile[] = "{$fixtureName}";
+        return realpath(implode(DIRECTORY_SEPARATOR, $pathToFile));
     }
 
     public function testGenDiff()
     {
         $expected = file_get_contents($this->getFixtureFullPath('diff.pretty'));
-        $actual = genDiff($this->getFixtureFullPath('before.yml'), $this->getFixtureFullPath('after.json'));
+        $actual = genDiff($this->getFixtureFullPath('before.json'), $this->getFixtureFullPath('after.yml'));
         $this->assertEquals($expected, $actual);
     }
 
     public function testRenderPlainDiff()
     {
         $expected = file_get_contents($this->getFixtureFullPath('diff.plain'));
-        $actual = genDiff($this->getFixtureFullPath('before.json'), $this->getFixtureFullPath('after.yml'), 'plain');
+        $actual = genDiff($this->getFixtureFullPath('before.yml'), $this->getFixtureFullPath('after.json'), 'plain');
         $this->assertEquals($expected, $actual);
     }
 

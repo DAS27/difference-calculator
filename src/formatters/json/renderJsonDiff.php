@@ -1,8 +1,8 @@
 <?php
 
-namespace Formatter;
-use function Renderer\stringify;
-use function Renderer\isBool;
+namespace Differ\Formatter;
+use function Differ\Renderer\stringify;
+use function Differ\Renderer\isBool;
 
 function renderJsonDiff($tree)
 {

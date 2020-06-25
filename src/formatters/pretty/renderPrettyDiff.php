@@ -1,6 +1,6 @@
 <?php
 
-namespace Renderer;
+namespace Differ\Renderer;
 
 function render($tree)
 {

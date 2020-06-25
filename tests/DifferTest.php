@@ -9,14 +9,11 @@ class DifferTest extends TestCase
 {
     private function getFixtureFullPath($fixtureName)
     {
-        $pathToFile = [];
-        $pathToFile[] = __DIR__;
-        $pathToFile[] = "fixtures";
-        $pathToFile[] = "{$fixtureName}";
+        $pathToFile = [__DIR__, 'fixtures', $fixtureName];
         return realpath(implode(DIRECTORY_SEPARATOR, $pathToFile));
     }
 
-    public function testGenDiff()
+    public function testRenderPrettyDiff()
     {
         $expected = file_get_contents($this->getFixtureFullPath('diff.pretty'));
         $actual = genDiff($this->getFixtureFullPath('before.json'), $this->getFixtureFullPath('after.yml'));

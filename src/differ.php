@@ -2,27 +2,33 @@
 
 namespace Differ;
 
-use function Ast\buildDiff;
-use function Renderer\render;
-use function Formatter\renderPlainDiff;
-use function Formatter\renderJsonDiff;
-use function Parsers\parse;
+use function Differ\Ast\buildDiff;
+use function Differ\Renderer\render;
+use function Differ\Formatter\renderPlainDiff;
+use function Differ\Formatter\renderJsonDiff;
+use function Differ\Parsers\parse;
 
 function genDiff($path1, $path2, $format = 'pretty')
 {
-    $extension1 = pathinfo($path1);
-    $extension2 = pathinfo($path2);
+    $content1 = file_get_contents($path1);
+    $content2 = file_get_contents($path2);
 
-    $data1 = parse($path1, $extension1['extension']);
-    $data2 = parse($path2, $extension2['extension']);
+    $dataType1 = pathinfo($path1)['extension'];
+    $dataType2 = pathinfo($path2)['extension'];
+
+    $data1 = parse($content1, $dataType1);
+    $data2 = parse($content2, $dataType2);
 
     $diff = buildDiff($data1, $data2);
 
-    if ($format == 'plain') {
-        return renderPlainDiff($diff);
-    } elseif ($format == 'json') {
-        return renderJsonDiff($diff);
+    switch ($format) {
+        case 'pretty':
+            return render($diff);
+        case 'plain':
+            return renderPlainDiff($diff);
+        case 'json':
+            return renderJsonDiff($diff);
+        default:
+            throw new \Error('Error format is wrong!');
     }
-
-    return render($diff);
 }

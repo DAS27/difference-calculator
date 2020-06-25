@@ -1,6 +1,6 @@
 <?php
 
-namespace Formatter;
+namespace Differ\Formatter;
 
 function renderPlainDiff($tree)
 {

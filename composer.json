@@ -1,5 +1,5 @@
 {
-    "name": "damir/difference-calculator",
+    "name": "damir/differ",
     "type": "project",
     "description": "My second project on php",
     "authors": [
@@ -33,11 +33,11 @@
     "autoload": {
         "files": [
             "src/differ.php",
-            "formatters/parsers.php",
             "src/ast.php",
-            "formatters/pretty/renderPrettyDiff.php",
-            "formatters/plain/renderPlainDiff.php",
-            "formatters/json/renderJsonDiff.php"
+            "src/formatters/parsers.php",
+            "src/formatters/pretty/renderPrettyDiff.php",
+            "src/formatters/plain/renderPlainDiff.php",
+            "src/formatters/json/renderJsonDiff.php"
         ]
     }
 }

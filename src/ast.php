@@ -1,6 +1,6 @@
 <?php
 
-namespace Ast;
+namespace Differ\Ast;
 
 use function Funct\Collection\union;
 

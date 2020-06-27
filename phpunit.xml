@@ -8,7 +8,9 @@
     convertNoticesToExceptions="true"
     convertWarningsToExceptions="true"
     processIsolation="false"
-    stopOnFailure="true">
+    stopOnFailure="true"
+    bootstrap="vendor/autoload.php"
+>
     <filter>
         <whitelist addUncoveredFilesFromWhitelist="true">
             <directory suffix=".php">./src</directory>

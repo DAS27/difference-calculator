@@ -1,6 +1,7 @@
 <?php
 
 namespace Differ\Formatter;
+
 use function Differ\Renderer\stringify;
 use function Differ\Renderer\isBool;
 

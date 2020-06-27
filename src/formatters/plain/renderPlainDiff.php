@@ -13,10 +13,12 @@ function renderPlainDiff($tree)
                     $acc .= "Property " . "'" . trim($nestedPath, '.') . "'" . " was removed\n";
                     break;
                 case 'added':
-                    $acc .= "Property " . "'" . trim($nestedPath, '.') . "'" . " was added with value: " . stringify($newValue);
+                    $acc .= "Property " . "'" . trim($nestedPath, '.') . "'";
+                    $acc .= " was added with value: " . stringify($newValue);
                     break;
                 case 'edited':
-                    $acc .= "\nProperty " . "'" . trim($nestedPath, '.') . "'" . " was changed. From '{$oldValue}' to '{$newValue}'\n";
+                    $acc .= "\nProperty " . "'" . trim($nestedPath, '.') . "'";
+                    $acc .= " was changed. From '{$oldValue}' to '{$newValue}'\n";
                     break;
                 case 'nested':
                     $acc .= $iter($n['children'], $key);

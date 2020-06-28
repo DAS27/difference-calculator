@@ -1,10 +1,10 @@
 <?php
 
-namespace Differ\Ast;
+namespace Differ\AstBuilder;
 
 use function Funct\Collection\union;
 
-function mknode(string $key, string $type, $oldValue, $newValue, array $children = [])
+function makeNode(string $key, string $type, $oldValue, $newValue, array $children = [])
 {
     return [
         'key' => $key,
@@ -21,25 +21,25 @@ function buildDiff($data1, $data2)
     return array_reduce($keys, function ($acc, $key) use ($data1, $data2) {
         if (array_key_exists($key, $data1) && array_key_exists($key, $data2)) {
             if ($data1[$key] == $data2[$key]) {
-                $acc[] = mknode($key, 'unchanged', $data1[$key], null);
+                $acc[] = makeNode($key, 'unchanged', $data1[$key], null);
                 return  $acc;
             }
         }
-        if (!array_key_exists($key, $data1) && array_key_exists($key, $data2)) {
-            $acc[] = mknode($key, 'added', null, $data2[$key]);
+        if (!array_key_exists($key, $data1)) {
+            $acc[] = makeNode($key, 'added', null, $data2[$key]);
             return $acc;
         }
-        if (array_key_exists($key, $data1) && !array_key_exists($key, $data2)) {
-            $acc[] = mknode($key, 'deleted', $data1[$key], null);
+        if (!array_key_exists($key, $data2)) {
+            $acc[] = makeNode($key, 'deleted', $data1[$key], null);
             return $acc;
         }
         if (is_array($data1[$key]) && is_array($data2[$key])) {
-            $acc[] = mknode($key, 'nested', null, null, buildDiff($data1[$key], $data2[$key]));
+            $acc[] = makeNode($key, 'nested', null, null, buildDiff($data1[$key], $data2[$key]));
             return  $acc;
         }
         if (array_key_exists($key, $data1) && array_key_exists($key, $data2)) {
             if ($data1[$key] !== $data2[$key]) {
-                $acc[] = mknode($key, 'edited', $data1[$key], $data2[$key]);
+                $acc[] = makeNode($key, 'edited', $data1[$key], $data2[$key]);
                 return $acc;
             }
         }

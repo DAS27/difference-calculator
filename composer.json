@@ -33,11 +33,11 @@
     "autoload": {
         "files": [
             "src/differ.php",
-            "src/ast.php",
-            "src/formatters/parsers.php",
-            "src/formatters/pretty/renderPrettyDiff.php",
-            "src/formatters/plain/renderPlainDiff.php",
-            "src/formatters/json/renderJsonDiff.php"
+            "src/astBuilder.php",
+            "src/parsers.php",
+            "src/formatters/renderPrettyDiff.php",
+            "src/formatters/renderPlainDiff.php",
+            "src/formatters/renderJsonDiff.php"
         ]
     }
 }

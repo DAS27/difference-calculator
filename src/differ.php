@@ -2,11 +2,12 @@
 
 namespace Differ;
 
-use function Differ\Ast\buildDiff;
+use function Differ\AstBuilder\buildDiff;
 use function Differ\Renderer\render;
-use function Differ\Formatter\renderPlainDiff;
-use function Differ\Formatter\renderJsonDiff;
+use function Differ\Formatters\renderJsonDiff;
+use function Differ\Formatters\renderPlainDiff;
 use function Differ\Parsers\parse;
+use function Differ\Formatters\getFormatter;
 
 function genDiff($path1, $path2, $format = 'pretty')
 {
@@ -21,14 +22,7 @@ function genDiff($path1, $path2, $format = 'pretty')
 
     $diff = buildDiff($data1, $data2);
 
-    switch ($format) {
-        case 'pretty':
-            return render($diff);
-        case 'plain':
-            return renderPlainDiff($diff);
-        case 'json':
-            return renderJsonDiff($diff);
-        default:
-            throw new \Error('Error format is wrong!');
-    }
+    $formatter = getFormatter($format);
+
+    return $formatter($diff);
 }

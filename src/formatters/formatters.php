@@ -6,21 +6,16 @@ use function Differ\Renderer\render;
 
 function getFormatter($format)
 {
-    $getFormatter = function () {
-        return 
+    return function ($diff) use ($format) {
+        switch ($format) {
+            case 'pretty':
+                return render($diff);
+            case 'plain':
+                return renderPlainDiff($diff);
+            case 'json':
+                return renderJsonDiff($diff);
+            default:
+                throw new \Error('Error format is wrong!');
+        }
     };
-
-    switch ($format) {
-        case 'pretty':
-            return render($diff);
-        case 'plain':
-            return renderPlainDiff($diff);
-        case 'json':
-            return renderJsonDiff($diff);
-        default:
-            throw new \Error('Error format is wrong!');
-    }
-    };
-
-    return $getFormatter();
 }

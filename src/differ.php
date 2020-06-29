@@ -3,9 +3,6 @@
 namespace Differ;
 
 use function Differ\AstBuilder\buildDiff;
-use function Differ\Renderer\render;
-use function Differ\Formatters\renderJsonDiff;
-use function Differ\Formatters\renderPlainDiff;
 use function Differ\Parsers\parse;
 use function Differ\Formatters\getFormatter;
 

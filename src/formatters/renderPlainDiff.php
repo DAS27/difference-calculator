@@ -1,7 +1,7 @@
 <?php
 
 namespace Differ\Formatters;
-
+/*
 function renderPlainDiff($tree)
 {
     $iter = function ($node, $ancestry = '') use (&$iter) {
@@ -30,8 +30,33 @@ function renderPlainDiff($tree)
 
     return $iter($tree);
 }
+*/
+
+use function Funct\Collection\flatten;
+
+function renderPlainDiff($tree)
+{
+    $iter = function ($node, $ancestry = '') use (&$iter) {
+        return array_map(function ($item) use ($iter, $ancestry) {
+            ['key' => $key, 'type' => $type, 'oldValue' => $oldValue, 'newValue' => $newValue] = $item;
+            $nestedPath = trim("{$ancestry}.{$key}", '.');
+            switch ($type) {
+                case 'deleted':
+                    return "Property '{$nestedPath}' was removed";
+                    break;
+                case 'added':
+                    return "Property '{$nestedPath}' was added with value: ";
+                    break;
+            }
+        }, $node);
+    };
+
+    $flattened = flatten($iter($tree));
+
+    return implode("\n", $flattened);
+}
 
 function stringify($value)
 {
-    return is_array($value) ? "'complex value'" : "'{$value}'\n";
+    return is_array($value) ? "'complex value'" : "'{$value}'";
 }

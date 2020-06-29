@@ -35,6 +35,7 @@
             "src/differ.php",
             "src/astBuilder.php",
             "src/parsers.php",
+            "src/formatters/formatters.php",
             "src/formatters/renderPrettyDiff.php",
             "src/formatters/renderPlainDiff.php",
             "src/formatters/renderJsonDiff.php"

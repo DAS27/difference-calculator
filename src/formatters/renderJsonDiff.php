@@ -14,8 +14,8 @@ function renderJsonDiff($tree)
     ];
 
     $iter = function ($node, $level = 1) use (&$iter, $operators) {
-        return array_reduce($node, function ($acc, $n) use ($operators, $iter, $level) {
-            ['key' => $key, 'type' => $type, 'oldValue' => $oldValue, 'newValue' => $newValue] = $n;
+        return array_reduce($node, function ($acc, $item) use ($operators, $iter, $level) {
+            ['key' => $key, 'type' => $type, 'oldValue' => $oldValue, 'newValue' => $newValue] = $item;
             ['plus' => $plus, 'minus' => $minus, 'space' => $space] = $operators;
             $indent = str_repeat(' ', 2 * $level);
             switch ($type) {
@@ -39,7 +39,7 @@ function renderJsonDiff($tree)
                     break;
                 case 'nested':
                     $acc .= "{$indent}\"$space $key\": ";
-                    $acc .= $iter($n['children'], 3);
+                    $acc .= $iter($item['children'], 3);
                     $acc .= "{$indent}{$indent}}\n";
                     break;
             }

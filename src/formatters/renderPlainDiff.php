@@ -1,33 +1,38 @@
 <?php
 
-namespace Differ\Formatters;
+namespace Differ\Formatters\RenderPlainDiff;
 
-use function Funct\Collection\flattenAll;
+use function Funct\Collection\flatten;
 
 function renderPlainDiff($tree)
 {
     $iter = function ($node, $ancestry = '') use (&$iter) {
-        return array_map(function ($item) use ($iter, $ancestry) {
+        $result = array_map(function ($item) use ($iter, $ancestry) {
             ['key' => $key, 'type' => $type, 'oldValue' => $oldValue, 'newValue' => $newValue] = $item;
-            $nestedPath = trim("{$ancestry}.{$key}", '.');
+            $propertyName = "{$ancestry}{$key}";
             $newValue = stringify($newValue);
+            $oldValue = stringify($oldValue);
             switch ($type) {
                 case 'edited':
-                    return "Property '{$nestedPath}' was changed. From '{$oldValue}' to '{$newValue}'";
-                    break;
+                    return "Property '{$propertyName}' was changed. From '{$oldValue}' to '{$newValue}'";
                 case 'deleted':
-                    return "Property '{$nestedPath}' was removed";
-                    break;
+                    return "Property '{$propertyName}' was removed";
                 case 'added':
-                    return "Property '{$nestedPath}' was added with value: '{$newValue}'";
+                    return "Property '{$propertyName}' was added with value: '{$newValue}'";
+                case 'unchanged':
                     break;
+                case 'nested':
+                    return $iter($item['children'], "{$ancestry}{$key}.");
                 default:
-                    return $iter($item['children'], $key);
+                    throw new \Exception("Undefined type: {$type}");
             }
         }, $node);
+         return array_filter($result, function ($item) {
+            return $item !== null;
+         });
     };
 
-    $flattened = flattenAll($iter($tree));
+    $flattened = flatten($iter($tree));
 
     return implode("\n", $flattened);
 }

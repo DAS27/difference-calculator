@@ -2,6 +2,7 @@
 
 namespace Differ\Formatters\RenderPlainDiff;
 
+use Exception;
 use function Funct\Collection\flatten;
 
 function renderPlainDiff($tree)
@@ -13,7 +14,7 @@ function renderPlainDiff($tree)
             $newValue = stringify($newValue);
             $oldValue = stringify($oldValue);
             switch ($type) {
-                case 'edited':
+                case 'changed':
                     return "Property '{$propertyName}' was changed. From '{$oldValue}' to '{$newValue}'";
                 case 'deleted':
                     return "Property '{$propertyName}' was removed";
@@ -24,7 +25,7 @@ function renderPlainDiff($tree)
                 case 'nested':
                     return $iter($item['children'], "{$ancestry}{$key}.");
                 default:
-                    throw new \Exception("Undefined type: {$type}");
+                    throw new Exception("Undefined type: {$type}");
             }
         }, $node);
          return array_filter($result, function ($item) {

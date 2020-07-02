@@ -19,11 +19,6 @@ function buildDiff($data1, $data2)
 {
     $keys = union(array_keys($data1), array_keys($data2));
     return array_map(function ($key) use ($data1, $data2) {
-        if (array_key_exists($key, $data1) && array_key_exists($key, $data2)) {
-            if ($data1[$key] == $data2[$key]) {
-                return makeNode($key, 'unchanged', $data1[$key], null);
-            }
-        }
         if (!array_key_exists($key, $data1)) {
             return makeNode($key, 'added', null, $data2[$key]);
         }
@@ -34,8 +29,10 @@ function buildDiff($data1, $data2)
             return makeNode($key, 'nested', null, null, buildDiff($data1[$key], $data2[$key]));
         }
         if (array_key_exists($key, $data1) && array_key_exists($key, $data2)) {
-            if ($data1[$key] !== $data2[$key]) {
-                return makeNode($key, 'edited', $data1[$key], $data2[$key]);
+            if ($data1[$key] == $data2[$key]) {
+                return makeNode($key, 'unchanged', $data1[$key], null);
+            } elseif ($data1[$key] !== $data2[$key]) {
+                return makeNode($key, 'changed', $data1[$key], $data2[$key]);
             }
         }
     }, $keys);

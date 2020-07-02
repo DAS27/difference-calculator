@@ -19,7 +19,7 @@ function genDiff($path1, $path2, $format = 'pretty')
 
     $diff = buildDiff($data1, $data2);
 
-    $formatter = getFormatter($format);
+    $getFormatter = getFormatter($format);
 
-    return $formatter($diff);
+    return $getFormatter($diff);
 }

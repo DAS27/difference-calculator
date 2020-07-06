@@ -3,6 +3,7 @@
 namespace Differ\Formatters;
 
 use Error;
+
 use function Differ\Formatters\renderPlainDiff\renderPlainDiff;
 use function Differ\Formatters\RenderPrettyDiff\renderPrettyDiff;
 

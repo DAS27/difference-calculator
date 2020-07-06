@@ -3,6 +3,7 @@
 namespace Differ\Formatters\RenderPlainDiff;
 
 use Exception;
+
 use function Funct\Collection\flatten;
 
 function renderPlainDiff($tree)
@@ -34,7 +35,6 @@ function renderPlainDiff($tree)
     };
 
     $flattened = flatten($iter($tree));
-
     return implode("\n", $flattened);
 }
 

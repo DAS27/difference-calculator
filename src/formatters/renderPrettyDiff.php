@@ -1,94 +1,54 @@
 <?php
 
-namespace Differ\Renderer;
+namespace Differ\Formatters\RenderPrettyDiff;
 
-function render($tree)
+function renderPrettyDiff($tree)
 {
-    $operators = [
-        'plus' => '+',
-        'minus' => '-',
-        'space' => "  ",
-    ];
-
-    $iter = function ($node, $level = 1) use (&$iter, $operators) {
-        return array_reduce($node, function ($acc, $item) use ($operators, $iter, $level) {
+    $iter = function ($node, $level = 1) use (&$iter) {
+        return array_map(function ($item) use ($level, $iter) {
             ['key' => $key, 'type' => $type, 'oldValue' => $oldValue, 'newValue' => $newValue] = $item;
-            ['plus' => $plus, 'minus' => $minus, 'space' => $space] = $operators;
-            $indent = str_repeat(' ', 2 * $level);
+            $indent = str_repeat(' ', 4 * $level);
+            $indentForChangedItems = str_repeat(' ', 4 * $level - 2);
             switch ($type) {
-                case 'unchanged':
-                    $acc .= "{$indent}{$space}{$key}: ";
-                    if (is_array($oldValue)) {
-                        $acc .= str_replace('"', null, stringify($oldValue, $indent));
-                    } else {
-                        $acc .= str_replace('"', null, isBool($oldValue));
-                    }
-                    break;
-                case 'deleted':
-                    $acc .= "{$indent}{$minus} {$key}: ";
-                    if (is_array($oldValue)) {
-                        $acc .= str_replace('"', null, stringify($oldValue, $indent));
-                    } else {
-                        $acc .= str_replace('"', null, isBool($oldValue));
-                    }
-                    break;
-                case 'added':
-                    $acc .= "{$indent}{$plus} {$key}: ";
-                    if (is_array($newValue)) {
-                        $acc .= str_replace('"', null, stringify($newValue, $indent));
-                    } else {
-                        $acc .= str_replace('"', null, isBool($newValue));
-                    }
-                    break;
-                case 'edited':
-                    $acc .= "{$indent}{$plus} {$key}: ";
-                    if (is_array($newValue)) {
-                        $acc .= str_replace('"', null, stringify($newValue, $indent));
-                    } else {
-                        $acc .= str_replace('"', null, isBool($newValue));
-                    }
-                    $acc .= "{$indent}{$minus} {$key}: ";
-                    if (is_array($oldValue)) {
-                        $acc .= str_replace('"', null, stringify($oldValue, $indent));
-                    } else {
-                        $acc .= str_replace('"', null, isBool($oldValue));
-                    }
-                    break;
                 case 'nested':
-                    $acc .= "{$indent}{$space}{$key}: ";
-                    $acc .= $iter($item['children'], 3);
-                    $acc .= "{$indent}{$indent}}\n";
-                    break;
+                    $children = implode("\n", $iter($item['children'], $level + 1));
+                    return "{$indent}{$key}: {\n{$children}\n{$indent}}";
+                case 'added':
+                    return "{$indentForChangedItems}+ {$key}:" . stringify($newValue, $level);
+                case 'deleted':
+                    return "{$indentForChangedItems}- {$key}:" . stringify($oldValue, $level);
+                case 'changed':
+                    $result = [
+                        "{$indentForChangedItems}+ {$key}:" . stringify($newValue, $level),
+                        "{$indentForChangedItems}- {$key}:" . stringify($oldValue, $level)
+                    ];
+                    return implode("\n", $result);
+                case 'unchanged':
+                    return "{$indent}{$key}:" . stringify($oldValue, $level);
+                default:
+                    throw new \Exception("Undefined type: {$type}");
             }
-            return $acc;
-        }, "{\n");
+        }, $node);
     };
 
-    $result = $iter($tree);
-    $result .= '}';
-    return $result;
+    $result = implode("\n", $iter($tree));
+    return "{\n{$result}\n}";
 }
 
-function stringify($node, $indent)
+function stringify($value, $level)
 {
-    $result = "";
-    if (is_array($node)) {
-        $result .= "{\n";
-        foreach ($node as $key => $value) {
-            $indent2 = str_repeat(" ", 6);
-            $result .= "{$indent}{$indent2}\"$key: $value\"\n";
+    $indent = str_repeat(' ', 4 * $level);
+    if (is_array($value)) {
+        $level++;
+        $indent2 = str_repeat(' ', 4 * $level);
+        foreach ($value as $key => $item) {
+            return " {\n{$indent2}{$key}: $item\n{$indent}}";
         }
-        $result .= "  {$indent}}\n";
-        return $result;
     }
 
-    return $result;
-}
-
-function isBool($value)
-{
     if (is_bool($value)) {
-        return "\"true\"\n";
+        return $value ? " true" : " false";
     }
-    return "\"$value\"\n";
+
+    return " {$value}";
 }

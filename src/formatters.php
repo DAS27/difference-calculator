@@ -16,7 +16,7 @@ function getFormatter($format)
             case 'plain':
                 return renderPlainDiff($diff);
             case 'json':
-                return json_encode($diff, JSON_PRETTY_PRINT);
+                return renderJsonDiff($diff);
             default:
                 throw new Error("Unknown format: {$format}");
         }

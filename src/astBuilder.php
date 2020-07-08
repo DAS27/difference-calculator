@@ -31,7 +31,7 @@ function buildDiff($data1, $data2)
         if (array_key_exists($key, $data1) && array_key_exists($key, $data2)) {
             if ($data1[$key] == $data2[$key]) {
                 return makeNode($key, 'unchanged', $data1[$key], null);
-            } elseif ($data1[$key] !== $data2[$key]) {
+            } else {
                 return makeNode($key, 'changed', $data1[$key], $data2[$key]);
             }
         }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Differ\Formatters\RenderPrettyDiff;
+namespace Differ\Formatters\Pretty;
 
 function renderPrettyDiff($tree)
 {
@@ -9,22 +9,24 @@ function renderPrettyDiff($tree)
             ['key' => $key, 'type' => $type, 'oldValue' => $oldValue, 'newValue' => $newValue] = $item;
             $indent = str_repeat(' ', 4 * $level);
             $indentForChangedItems = str_repeat(' ', 4 * $level - 2);
+            $formattedNewValue = stringify($newValue, $level);
+            $formattedOldValue = stringify($oldValue, $level);
             switch ($type) {
                 case 'nested':
                     $children = implode("\n", $iter($item['children'], $level + 1));
                     return "{$indent}{$key}: {\n{$children}\n{$indent}}";
                 case 'added':
-                    return "{$indentForChangedItems}+ {$key}:" . stringify($newValue, $level);
+                    return "{$indentForChangedItems}+ {$key}: {$formattedNewValue}";
                 case 'deleted':
-                    return "{$indentForChangedItems}- {$key}:" . stringify($oldValue, $level);
+                    return "{$indentForChangedItems}- {$key}: {$formattedOldValue}" ;
                 case 'changed':
                     $result = [
-                        "{$indentForChangedItems}+ {$key}:" . stringify($newValue, $level),
-                        "{$indentForChangedItems}- {$key}:" . stringify($oldValue, $level)
+                        "{$indentForChangedItems}+ {$key}: {$formattedNewValue}",
+                        "{$indentForChangedItems}- {$key}: {$formattedOldValue}"
                     ];
                     return implode("\n", $result);
                 case 'unchanged':
-                    return "{$indent}{$key}:" . stringify($oldValue, $level);
+                    return "{$indent}{$key}: $formattedOldValue";
                 default:
                     throw new \Exception("Undefined type: {$type}");
             }
@@ -35,20 +37,21 @@ function renderPrettyDiff($tree)
     return "{\n{$result}\n}";
 }
 
-function stringify($value, $level)
+function stringify($value, $level = null)
 {
+    if (is_bool($value)) {
+        return $value ? "true" : "false";
+    }
+
     $indent = str_repeat(' ', 4 * $level);
     if (is_array($value)) {
-        $level++;
-        $indent2 = str_repeat(' ', 4 * $level);
+        $result = "";
+        $dataIndent = str_repeat(' ', 4 * ($level + 1));
         foreach ($value as $key => $item) {
-            return " {\n{$indent2}{$key}: $item\n{$indent}}";
+            $result .= "{$dataIndent}{$key}: $item\n";
         }
+        return "{\n{$result}{$indent}}";
+    } else {
+        return $value;
     }
-
-    if (is_bool($value)) {
-        return $value ? " true" : " false";
-    }
-
-    return " {$value}";
 }

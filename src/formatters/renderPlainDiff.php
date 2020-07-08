@@ -1,15 +1,13 @@
 <?php
 
-namespace Differ\Formatters\RenderPlainDiff;
+namespace Differ\Formatters\Plain;
 
-use Exception;
-
-use function Funct\Collection\flatten;
+use function Funct\Collection\flattenAll;
 
 function renderPlainDiff($tree)
 {
     $iter = function ($node, $ancestry = '') use (&$iter) {
-        $result = array_map(function ($item) use ($iter, $ancestry) {
+        return array_map(function ($item) use ($iter, $ancestry) {
             ['key' => $key, 'type' => $type, 'oldValue' => $oldValue, 'newValue' => $newValue] = $item;
             $propertyName = "{$ancestry}{$key}";
             $newValue = stringify($newValue);
@@ -22,23 +20,20 @@ function renderPlainDiff($tree)
                 case 'added':
                     return "Property '{$propertyName}' was added with value: '{$newValue}'";
                 case 'unchanged':
-                    break;
+                    return [];
                 case 'nested':
                     return $iter($item['children'], "{$ancestry}{$key}.");
                 default:
-                    throw new Exception("Undefined type: {$type}");
+                    throw new \Exception("Undefined type: {$type}");
             }
         }, $node);
-         return array_filter($result, function ($item) {
-            return $item !== null;
-         });
     };
 
-    $flattened = flatten($iter($tree));
-    return implode("\n", $flattened);
+    $flattened = flattenAll($iter($tree));
+    return implode(PHP_EOL, $flattened);
 }
 
 function stringify($value)
 {
-    return is_array($value) ? "complex value" : "{$value}";
+    return is_array($value) ? "complex value" : $value;
 }

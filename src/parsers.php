@@ -2,7 +2,6 @@
 
 namespace Differ\Parsers;
 
-use Error;
 use Symfony\Component\Yaml\Yaml;
 
 function parse($data, $format)
@@ -14,6 +13,6 @@ function parse($data, $format)
         case 'yml':
             return Yaml::parse($data);
         default:
-            throw new Error('Error format is wrong!');
+            throw new \Exception("Unknown format: {$format}");
     }
 }

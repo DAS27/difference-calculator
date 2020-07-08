@@ -2,10 +2,9 @@
 
 namespace Differ\Formatters;
 
-use Error;
-
-use function Differ\Formatters\renderPlainDiff\renderPlainDiff;
-use function Differ\Formatters\RenderPrettyDiff\renderPrettyDiff;
+use function Differ\Formatters\Json\renderJsonDiff;
+use function Differ\Formatters\Plain\renderPlainDiff;
+use function Differ\Formatters\Pretty\renderPrettyDiff;
 
 function getFormatter($format)
 {
@@ -18,7 +17,7 @@ function getFormatter($format)
             case 'json':
                 return renderJsonDiff($diff);
             default:
-                throw new Error("Unknown format: {$format}");
+                throw new \Exception("Unknown format: {$format}");
         }
     };
 }

@@ -21,13 +21,6 @@ class DifferTest extends TestCase
         $this->assertEquals($expected, $actual);
     }
 
-    public function testRenderPrettyDiff2()
-    {
-        $expected = file_get_contents($this->getFixtureFullPath('diff2.pretty'));
-        $actual = genDiff($this->getFixtureFullPath('before2.json'), $this->getFixtureFullPath('after2.yml'));
-        $this->assertEquals($expected, $actual);
-    }
-
     public function testRenderPlainDiff()
     {
         $expected = file_get_contents($this->getFixtureFullPath('diff.plain'));

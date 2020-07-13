@@ -5,10 +5,12 @@
         setting3: true
       - setting6: {
             key: value
+            key2: false
         }
       + setting4: blah blah
       + setting5: {
             key5: value5
+            key6: value6
         }
     }
     group1: {
@@ -18,6 +20,7 @@
     }
   - group2: {
         abc: 12345
+        def: 6789
     }
   + group3: {
         fee: 100500

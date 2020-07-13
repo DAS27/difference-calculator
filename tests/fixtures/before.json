@@ -4,7 +4,8 @@
     "setting2": "200",
     "setting3": true,
     "setting6": {
-      "key": "value"
+      "key": "value",
+      "key2": false
     }
   },
   "group1": {
@@ -12,6 +13,7 @@
     "foo": "bar"
   },
   "group2": {
-    "abc": "12345"
+    "abc": "12345",
+    "def": "6789"
   }
 }

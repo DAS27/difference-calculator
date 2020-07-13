@@ -30,7 +30,8 @@
                 "key": "setting6",
                 "type": "deleted",
                 "oldValue": {
-                    "key": "value"
+                    "key": "value",
+                    "key2": false
                 },
                 "newValue": null,
                 "children": []
@@ -79,7 +80,8 @@
         "key": "group2",
         "type": "deleted",
         "oldValue": {
-            "abc": "12345"
+            "abc": "12345",
+            "def": "6789"
         },
         "newValue": null,
         "children": []

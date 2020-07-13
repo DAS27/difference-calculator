@@ -30,7 +30,7 @@ function renderPlainDiff($tree)
     };
 
     $flattened = flattenAll($iter($tree));
-    return implode(PHP_EOL, $flattened);
+    return implode("\n", $flattened);
 }
 
 function stringify($value)

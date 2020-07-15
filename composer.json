@@ -17,6 +17,7 @@
         "docopt/docopt": "^1.0",
         "wp-cli/php-cli-tools": "^0.11.11",
         "funct/funct": "^1.5",
+        "tightenco/collect": "*",
         "ext-json": "*",
         "symfony/yaml": "^5.0"
     },

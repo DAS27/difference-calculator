@@ -17,23 +17,23 @@ function makeNode(string $key, string $type, $oldValue, $newValue, array $childr
 
 function buildDiff($data1, $data2)
 {
-    $keys = union(array_keys($data1), array_keys($data2));
+    $keys1 = collect($data1)->keys()->all();
+    $keys2 = collect($data2)->keys()->all();
+    $keys = union($keys1, $keys2);
     return array_map(function ($key) use ($data1, $data2) {
-        if (!array_key_exists($key, $data1)) {
-            return makeNode($key, 'added', null, $data2[$key]);
+        if (!property_exists($data1, $key)) {
+            return makeNode($key, 'added', null, $data2->$key);
         }
-        if (!array_key_exists($key, $data2)) {
-            return makeNode($key, 'deleted', $data1[$key], null);
+        if (!property_exists($data2, $key)) {
+            return makeNode($key, 'deleted', $data1->$key, null);
         }
-        if (is_array($data1[$key]) && is_array($data2[$key])) {
-            return makeNode($key, 'nested', null, null, buildDiff($data1[$key], $data2[$key]));
+        if (is_object($data1->$key) && is_object($data2->$key)) {
+            return makeNode($key, 'nested', null, null, buildDiff($data1->$key, $data2->$key));
         }
-        if (array_key_exists($key, $data1) && array_key_exists($key, $data2)) {
-            if ($data1[$key] == $data2[$key]) {
-                return makeNode($key, 'unchanged', $data1[$key], null);
-            } else {
-                return makeNode($key, 'changed', $data1[$key], $data2[$key]);
-            }
+        if ($data1->$key == $data2->$key) {
+            return makeNode($key, 'unchanged', $data1->$key, null);
+        } else {
+            return makeNode($key, 'changed', $data1->$key, $data2->$key);
         }
     }, $keys);
 }

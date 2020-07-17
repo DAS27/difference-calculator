@@ -43,18 +43,18 @@ function stringify($value, $level = null)
         return $value ? 'true' : 'false';
     }
 
-    if (!is_object($value)) {
+    if (!is_object($value) || is_array($value)) {
         return $value;
-    } else {
-        $indent = str_repeat(' ', 4 * $level);
-        $dataIndent = str_repeat(' ', 4 * ($level + 1));
-        $keys = collect($value)->keys()->all();
-        $makeStr = array_map(function ($key) use ($value, $dataIndent, $level) {
-            $value = stringify($value->$key, $level);
-            return "{$dataIndent}{$key}: {$value}";
-        }, $keys);
-
-        $result = implode("\n", $makeStr);
-        return "{\n{$result}\n{$indent}}";
     }
+
+    $indent = str_repeat(' ', 4 * $level);
+    $dataIndent = str_repeat(' ', 4 * ($level + 1));
+    $keys = collect($value)->keys()->all();
+    $data = array_map(function ($key) use ($value, $dataIndent, $level) {
+        $value = stringify($value->$key, $level);
+        return "{$dataIndent}{$key}: {$value}";
+    }, $keys);
+
+    $result = implode("\n", $data);
+    return "{\n{$result}\n{$indent}}";
 }

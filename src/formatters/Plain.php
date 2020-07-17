@@ -35,5 +35,5 @@ function renderPlainDiff($tree)
 
 function stringify($value)
 {
-    return is_object($value) ? "complex value" : $value;
+    return is_object($value) || is_array($value) ? "complex value" : $value;
 }

@@ -33,6 +33,6 @@ function buildDiff($data1, $data2)
         if ($data1->$key == $data2->$key) {
             return makeNode($key, 'unchanged', $data1->$key, null);
         }
-            return makeNode($key, 'changed', $data1->$key, $data2->$key);
+        return makeNode($key, 'changed', $data1->$key, $data2->$key);
     }, $keys);
 }

@@ -43,7 +43,7 @@ function stringify($value, $level = null)
         return $value ? 'true' : 'false';
     }
 
-    if (!is_object($value) || is_array($value)) {
+    if (!is_object($value) && !is_array($value)) {
         return $value;
     }
 
